@@ -1,0 +1,16 @@
+Package: rexamsconverter
+Type: Package
+Title: Converts Rmd rexams Files into LaTex format and Backwards
+Version: 0.1.0
+Author: Vladimir Omelyusik
+Maintainer: Vladimir Omelyusik <vsomelyusik@gmail.com>
+Description: The package contains two functions. The first one allows you
+    to convert formatted LaTex documents into Rmd files which can be 
+    processed by the rexams package. The second one does the opposite,
+    gathering Rmd files formatted as rexams into the one LaTex document.
+License: CC0
+Encoding: UTF-8
+LazyData: true
+Imports:
+    readr
+RoxygenNote: 6.0.1
