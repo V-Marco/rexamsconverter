@@ -253,7 +253,7 @@ latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nc
     write("================", name, append = TRUE)
     write(paste0("exname: ", counter), name, append = TRUE)
     write("extype: schoice", name, append = TRUE)
-    write(paste0("exsolution:", answer_string), name, append = TRUE)
+    write(paste0("exsolution: ", answer_string), name, append = TRUE)
     write("exshuffle: 5", name, append = TRUE)
 
     counter = counter + 1
