@@ -25,6 +25,24 @@ extract_from_command = function(element, command = "correctchoice") {
 }
 
 
+#' Trim one big string
+#' 
+#' Trim one big string
+#'
+#' Trim every space and tab after and before each newline symbol.
+#' @param string original string
+#' @return trimmed string
+#' @export
+#' @examples
+#' example = "sss\n   dfdfd\n\n ddfdf\n"
+#' global_trim(example)
+global_trim <- function(string) {
+  string_splitted = stringr::str_split(string, "\n")[[1]]
+  output = paste0(stringr::str_trim(string_splitted), collapse = "\n")
+  return(output)
+}
+
+
 #' Converts $$...$$ into \[...\]
 #' 
 #' Converts $$...$$ into \[...\]
@@ -86,6 +104,10 @@ brackets_to_dollars <- function(string) {
 latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nchar(path2latex) - 4)) {
 
   file <- readr::read_file(path2latex)
+  
+  # sometimes exams R package considers 4 spaces as beginning of verbatim text
+  # so we trim every line
+  file <- global_trim(file)
   
   # for the moment exams R package fails with \[...\] and requires $$...$$
   file <- brackets_to_dollars(file)
