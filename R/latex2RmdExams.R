@@ -210,19 +210,14 @@ latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nc
     # with 'correctchoice' and 'wrongchoice'.
 
     for (element in choices) {
-      if (grepl("correctchoice", element) == TRUE) {
-        a <- strsplit(element, "correctchoice")[[1]][2]
-        a <- gsub("[{}]","",strsplit(a,"\\}\\{")[[1]])
-        text_choices[[text_index]] <- a
-        text_index <- text_index + 1
+      if (grepl("correctchoice", element)) {
+        text_choices[[text_index]] <- extract_from_command(element, command = "correctchoice")
         answer_string <- paste(answer_string, "1", sep = '')
       } else {
-        a <- strsplit(element, "wrongchoice")[[1]][2]
-        a <- gsub("[{}]","",strsplit(a,"\\}\\{")[[1]])
-        text_choices[[text_index]] <- a
-        text_index <- text_index + 1
+        text_choices[[text_index]] <- extract_from_command(element, command = "wrongchoice")
         answer_string <- paste(answer_string, "0", sep = '')
       }
+      text_index <- text_index + 1
     }
 
     # Create a new Rmd file with an appropriate formatting.
@@ -248,9 +243,9 @@ latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nc
 
     for (element in strsplit(answer_string, "")[[1]]) {
       if (element == "0") {
-        write(paste("* ", "Неверно"), name, append = TRUE)
+        write(paste("* ", "Bad answer :("), name, append = TRUE)
       } else {
-        write(paste("* ", "Отлично"), name, append = TRUE)
+        write(paste("* ", "Good answer :)"), name, append = TRUE)
       }
     }
 
