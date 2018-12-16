@@ -25,6 +25,49 @@ extract_from_command = function(element, command = "correctchoice") {
 }
 
 
+#' Converts $$...$$ into \[...\]
+#' 
+#' Converts $$...$$ into \[...\]
+#'
+#' Converts $$...$$ into \[...\]
+#' Assumes that the number of $$ is pair.
+#' @param string latex block with $$...$$ 
+#' @return latex block with \[...\]
+#' @export
+#' @examples
+#' string = "$$5 + 5$$ + "
+#' dollars_to_brackets(string)
+dollars_to_brackets <- function(string) {
+  bracket_pairs <- stringr::str_count(string, pattern = "[$][$]") / 2
+  for (index in 1:bracket_pairs) {
+    string <- stringr::str_replace(string, pattern = "[$][$]", replacement = "\\\\[")
+    string <- stringr::str_replace(string, pattern = "[$][$]", replacement = "\\\\]")
+  }
+  return(string)
+}
+
+
+#' Converts \[...\] into $$...$$ 
+#' 
+#' Converts \[...\] into $$...$$ 
+#'
+#' Converts \[...\] into $$...$$ 
+#' @param string latex block with \[...\] 
+#' @return latex block with $$...$$
+#' @export
+#' @examples
+#' string = "\\[ 5 + 5 \\] + "
+#' brackets_to_dollars(string)
+brackets_to_dollars <- function(string) {
+  string = stringr::str_replace_all(string, "\\\\\\]", replacement = "$$")
+  string = stringr::str_replace_all(string, "\\\\\\[", replacement = "$$")
+  return(string)
+}
+
+
+
+
+
 #' Convert a formatted LaTex document into multiple Rmd files.
 #'
 #' Convert a formatted LaTex document into multiple Rmd files formatted as rexams.
@@ -42,6 +85,9 @@ extract_from_command = function(element, command = "correctchoice") {
 latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nchar(path2latex) - 4)) {
 
   file <- readr::read_file(path2latex)
+  
+  # for the moment exams R package fails with \[...\] and requires $$...$$
+  file <- brackets_to_dollars(file)
 
   # We'll keep the results in the folder.
   dir.create(directory_name)
@@ -228,7 +274,7 @@ latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nc
     file.create(name)
     write("Question", name)
     write("========", name, append = TRUE)
-    write(paste(task, "\n"), name, append = TRUE)
+    write(paste0(task, "\n"), name, append = TRUE)
     write("Answerlist", name, append = TRUE)
     write("----------", name, append = TRUE)
 
