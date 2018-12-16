@@ -9,6 +9,7 @@
 #' @param element character string with the command
 #' @param command command name 
 #' @return string with the argument of a command
+#' @export
 #' @examples
 #' element = "\n      \\correctchoice{ $\\frac{S_n - 4n}{10\\sqrt{n}}$ }"
 #' extract_from_command(element, command = "correctchoice)

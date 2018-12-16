@@ -5,6 +5,7 @@
 #' @param path2RmdFilesFolder A path to the folder containing the files. 
 #' The last element of the path must be the name of the folder.
 #' @return Creates an 'exam.txt' file in the folder with the Rmd files.
+#' @export
 #' @examples
 #' # RmdExams2latex("2015_midterm")
 RmdExams2latex <- function(path2RmdFilesFolder) {
