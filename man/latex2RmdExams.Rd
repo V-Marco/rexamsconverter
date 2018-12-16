@@ -14,11 +14,13 @@ Creates a folder with Rmd files in the same directory where the LaTex document i
 }
 \description{
 Convert a formatted LaTex document into multiple Rmd files formatted as rexams.
-The required format is the following: the LaTex document must contain all the questions you wish to convert to Rmd. The questions must be formatted \href{https://github.com/V-Marco/rexamsconverter/blob/master/format_example.txt}{as following}.
+The required format is the following: the LaTex document must contain all the questions you wish to convert to Rmd. 
+The questions must be formatted \href{https://github.com/V-Marco/rexamsconverter/blob/master/format_example.txt}{as following}.
 The document may also contain other elements (e.g. used for decoration) which will be ignored.
-There can also be text pieces related to several questions, e.g. 'In questions 20-22...', which can be added to each of the questions mentioned.
+There can also be text pieces related to several questions, e.g. 
+'In questions 20-22...', which can be added to each of the questions mentioned.
 To do so, wrap these text pieces \href{https://github.com/V-Marco/rexamsconverter/blob/master/format_example.txt}{as following}.
 }
 \examples{
-latex2RmdExams("2015_midterm.txt")
+# latex2RmdExams("2015_midterm.txt")
 }
