@@ -34,16 +34,13 @@ extract_from_command = function(element, command = "correctchoice") {
 #' 'In questions 20-22...', which can be added to each of the questions mentioned.
 #' To do so, wrap these text pieces \href{https://github.com/V-Marco/rexamsconverter/blob/master/format_example.txt}{as following}.
 #' @param path2latex A path to the LaTex document in .txt format. The last element of the path must be the file itself.
+#' @param directory_name folder name, optional
 #' @return Creates a folder with Rmd files in the same directory where the LaTex document is stored.
 #' @examples
 #' # latex2RmdExams("2015_midterm.txt")
-latex2RmdExams <- function(path2latex) {
+latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nchar(path2latex) - 4)) {
 
-  # File.
-  to_read_name <- path2latex
-  directory_name <- substr(to_read_name, 1, (nchar(to_read_name) - 4))
-
-  file <- readr::read_file(to_read_name)
+  file <- readr::read_file(path2latex)
 
   # We'll keep the results in the folder.
   dir.create(directory_name)

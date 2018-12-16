@@ -7,7 +7,8 @@
 RmdExams2latex(path2RmdFilesFolder)
 }
 \arguments{
-\item{path2RmdFilesFolder}{A path to the folder containing the files. The last element of the path must be the name of the folder.}
+\item{path2RmdFilesFolder}{A path to the folder containing the files. 
+The last element of the path must be the name of the folder.}
 }
 \value{
 Creates an 'exam.txt' file in the folder with the Rmd files.
@@ -16,5 +17,5 @@ Creates an 'exam.txt' file in the folder with the Rmd files.
 Convert a folder of Rmd files into the one Latex document.
 }
 \examples{
-RmdExams2latex("2015_midterm")
+# RmdExams2latex("2015_midterm")
 }

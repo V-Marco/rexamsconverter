@@ -4,10 +4,13 @@
 \alias{latex2RmdExams}
 \title{Convert a formatted LaTex document into multiple Rmd files.}
 \usage{
-latex2RmdExams(path2latex)
+latex2RmdExams(path2latex, directory_name = substr(path2latex, 1,
+  nchar(path2latex) - 4))
 }
 \arguments{
 \item{path2latex}{A path to the LaTex document in .txt format. The last element of the path must be the file itself.}
+
+\item{directory_name}{folder name, optional}
 }
 \value{
 Creates a folder with Rmd files in the same directory where the LaTex document is stored.
