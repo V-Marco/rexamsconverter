@@ -80,6 +80,7 @@ brackets_to_dollars <- function(string) {
 #' @param path2latex A path to the LaTex document in .txt format. The last element of the path must be the file itself.
 #' @param directory_name folder name, optional
 #' @return Creates a folder with Rmd files in the same directory where the LaTex document is stored.
+#' @export
 #' @examples
 #' # latex2RmdExams("2015_midterm.txt")
 latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nchar(path2latex) - 4)) {
