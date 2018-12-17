@@ -108,10 +108,10 @@ latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nc
   # sometimes exams R package considers 4 spaces as beginning of verbatim text
   # so we trim every line
   file <- global_trim(file)
-  
+
   # remove the line
-  file <- stringr::str_replace_all(file, "\\\\AMCnoCompleteMulti", "")
-  
+  file <- stringr::str_replace_all(file, "\\\\AMCnoCompleteMulti", "")  
+
   # for the moment exams R package fails with \[...\] and requires $$...$$
   file <- brackets_to_dollars(file)
 
