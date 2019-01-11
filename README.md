@@ -6,3 +6,5 @@ Functions to convert LaTex documents to Rmd rexams files and backward.
 `rmdExams2beamerlatex.R` – converts a folder of .Rmd files (AMC formatted) into a Beamer presentation.
 
 `RmdExams2latex.R` – converts a folder of .Rmd files (AMC formatted) into a LaTex document.
+
+You can find instructions in the corresponding folder, `instructions.pdf`.
