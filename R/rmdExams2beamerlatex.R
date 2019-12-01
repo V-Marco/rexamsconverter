@@ -8,7 +8,6 @@
 #' # latex2RmdExams("2015_midterm.txt")
 RmdExams2beamerlatex <- function(path2RmdFilesFolder) {
   
-  library(readr)
   counter <- 1
   path <- paste(path2RmdFilesFolder, "/", "exam.txt", sep = "")
   file.create(path)
@@ -41,7 +40,7 @@ RmdExams2beamerlatex <- function(path2RmdFilesFolder) {
   
   while (counter <= n_files - 1) {
     
-    file <- read_file(paste(path2RmdFilesFolder, "/", counter, ".Rmd", sep = ""))
+    file <- readr::read_file(paste(path2RmdFilesFolder, "/", counter, ".Rmd", sep = ""))
     
     # Split each question by '========' and take the following parts:
     # 2 -- task text and answer options
