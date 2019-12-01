@@ -12,7 +12,7 @@ exams2pdf_source(files_sample, n_vars = 1, add_seed = 777,
   template = "plain_no_sweave.tex",
   header = "\\\\input{../header.tex}",
   title = "С Наступающим Новым Годом :)",
-  nops = TRUE, shuffle = TRUE)
+  nops = TRUE, shuffle = TRUE, answers_as_tbl = TRUE)
 }
 \arguments{
 \item{files_sample}{character vector of Rmd file names}
@@ -52,6 +52,8 @@ exams2pdf_source(files_sample, n_vars = 1, add_seed = 777,
 \item{nops}{logical, whether to use exam2nops or exam2pdf}
 
 \item{shuffle}{logical, whether to shuffle questions in each variant}
+
+\item{answers_as_tbl}{logical, return answers as tibble and not as ugly list}
 }
 \value{
 Creates tex files and runs latex compilation
