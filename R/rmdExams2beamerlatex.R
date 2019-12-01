@@ -1,3 +1,11 @@
+#' Converts a folder of .Rmd files (rexams package formatted) into a Beamer presentation.
+#'
+#' Converts a folder of .Rmd files (rexams package formatted) into a Beamer presentation.
+#' @param path2RmdFilesFolder folder name
+#' @return Creates a tex file for beamer presentation
+#' @export
+#' @examples
+#' # latex2RmdExams("2015_midterm.txt")
 RmdExams2beamerlatex <- function(path2RmdFilesFolder) {
   
   library(readr)
@@ -129,5 +137,6 @@ RmdExams2beamerlatex <- function(path2RmdFilesFolder) {
   
   # End the document
   write('\\end{document}', path, append = TRUE)
+  return(NULL)
 }
 
