@@ -43,9 +43,9 @@ exams2pdf_source(files_sample, n_vars = 1, add_seed = 777,
 
 \item{blank}{number of blank pages}
 
-\item{template}{name of the template tex file}
+\item{template}{name of the template tex file, not used if nops == TRUE}
 
-\item{header}{header tex file name}
+\item{header}{header tex file name, not used if nops == FALSE}
 
 \item{title}{title}
 

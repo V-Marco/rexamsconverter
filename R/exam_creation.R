@@ -12,7 +12,7 @@ data_2_answers = function(filename) {
   exam_tibble = tibble::tibble(value = exam_vector, branch = names(value))
   exam_tibble = dplyr::mutate(exam_tibble, n_dots = stringr::str_count(branch, pattern = "\\."))
   max_dots = max(exam_tibble$n_dots)
-  exam_tibble = dplyr::mutate(exam_tibble, branch = dplyr::pmap_chr(list(branch, n_dots),
+  exam_tibble = dplyr::mutate(exam_tibble, branch = purrr::pmap_chr(list(branch, n_dots),
                                                       ~paste0(.x, rep(".", max_dots - .y), collapse = "")))
   
   exam_tibble = tidyr::separate(exam_tibble, branch, into = c("variant", "exercise", "level1", "level2"), sep = "\\.")
@@ -24,7 +24,7 @@ data_2_answers = function(filename) {
   
   ex_answers_wide = tidyr::spread(ex_answers, level2, value)
   ex_answers_wide = dplyr::mutate(ex_answers_wide, ans_letter = 
-                             dplyr::pmap_chr(list(solution1, solution2, solution3, solution4, solution5),
+                             purrr::pmap_chr(list(solution1, solution2, solution3, solution4, solution5),
                                       ~ paste0(ifelse(..1, "a", ""), 
                                                ifelse(..2, "b", ""), 
                                                ifelse(..3, "c", ""), 
@@ -55,8 +55,8 @@ data_2_answers = function(filename) {
 #' @param encoding encoding
 #' @param samepage ?
 #' @param blank number of blank pages
-#' @param template name of the template tex file
-#' @param header header tex file name
+#' @param template name of the template tex file, not used if nops == TRUE
+#' @param header header tex file name, not used if nops == FALSE
 #' @param reglength ?
 #' @param title title
 #' @param nops logical, whether to use exam2nops or exam2pdf
@@ -128,8 +128,7 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
                          language = language,
                          texdir = tex_dir_no,
                          encoding = encoding,
-                         template = template,
-                         header = header)
+                         template = template)
     }
   }
   return(NULL)
