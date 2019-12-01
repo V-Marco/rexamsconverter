@@ -9,6 +9,7 @@ exams2pdf_source(files_sample, n_vars = 1, add_seed = 777,
   name = "the_exam", date = "2018-12-28",
   institution = "Теория вероятностей", logo = "",
   encoding = "UTF-8", samepage = TRUE, reglength = 3, blank = 0,
+  template = "plain_no_sweave.tex",
   header = "\\\\input{../header.tex}",
   title = "С Наступающим Новым Годом :)",
   nops = TRUE, shuffle = TRUE)
@@ -41,6 +42,8 @@ exams2pdf_source(files_sample, n_vars = 1, add_seed = 777,
 \item{reglength}{?}
 
 \item{blank}{number of blank pages}
+
+\item{template}{name of the template tex file}
 
 \item{header}{header tex file name}
 

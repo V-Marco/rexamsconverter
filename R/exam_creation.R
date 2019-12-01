@@ -55,6 +55,7 @@ data_2_answers = function(filename) {
 #' @param encoding encoding
 #' @param samepage ?
 #' @param blank number of blank pages
+#' @param template name of the template tex file
 #' @param header header tex file name
 #' @param reglength ?
 #' @param title title
@@ -82,6 +83,7 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
                             samepage = TRUE,
                             reglength = 3, # is not working?
                             blank = 0,
+                            template = "plain_no_sweave.tex",
                             header = "\\input{../header.tex}",
                             title = "С Наступающим Новым Годом :)", 
                             nops = TRUE, shuffle = TRUE) {
@@ -117,7 +119,7 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
                           samepage = samepage,
                           reglength = reglength, # is not working?
                           blank = blank,
-                          header = "\\input{../header.tex}",
+                          header = header,
                           title = title)
     } else {
       exams <- exams::exams2pdf(files_sample, n = 1, 
@@ -126,8 +128,8 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
                          language = language,
                          texdir = tex_dir_no,
                          encoding = encoding,
-                         template = "plain_no_sweave.tex",
-                         header = "\\input{../header.tex}")
+                         template = template,
+                         header = header)
     }
   }
   return(NULL)
