@@ -14,7 +14,7 @@ data_2_answers = function(exam_data) {
   exam_tibble = dplyr::mutate(exam_tibble, branch = purrr::pmap_chr(list(branch, n_dots),
                                                       ~paste0(.x, rep(".", max_dots - .y), collapse = "")))
   
-  exam_tibble = tidyr::separate(exam_tibble, branch, into = c("variant", "exercise", "level1", "level2"), sep = "\\.")
+  exam_tibble = tidyr::separate(exam_tibble, branch, into = c("var_raw", "exercise", "level1", "level2"), sep = "\\.")
   exam_tibble = dplyr::select(exam_tibble, -n_dots)
   
   ex_answers = dplyr::filter(exam_tibble, 
@@ -31,7 +31,7 @@ data_2_answers = function(exam_data) {
                                                ifelse(..5, "e", ""), collape = "")))
   ex_answers_wide = dplyr::mutate(ex_answers_wide, 
                            q_no = as.numeric(stringr::str_extract(exercise, "[0-9]+$")))
-  ex_answers_wide = dplyr::select(ex_answers_wide, variant, q_no, name, ans_letter)
+  ex_answers_wide = dplyr::select(ex_answers_wide, var_raw, q_no, name, ans_letter)
   
   return(ex_answers_wide)
 }
@@ -134,14 +134,14 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
     }
     if (answers_as_tbl) {
       exam_df = data_2_answers(exams)
-      exam_df = dplyr::mutate(exam_df, local_var_no = var_no, file_name = files_sample)
+      exam_df = dplyr::mutate(exam_df, var_no = var_no, file_name = files_sample)
       all_answers[[var_no]] = exam_df
     } else {
       all_answers[[var_no]] = exams
     }
   }
   if (answers_as_tbl) {
-    all_answers = bind_rows(all_answers)
+    all_answers = dplyr::bind_rows(all_answers)
   }
   return(all_answers)
 }
