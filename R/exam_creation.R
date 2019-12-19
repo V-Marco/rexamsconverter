@@ -42,14 +42,13 @@ data_2_answers = function(exam_data) {
 #'
 #' User-friendly version of exams2pdf from exams package
 #' @param n_vars number of variants
-#' @param pdf_dir folder for output pdf
+#' @param output_dir folder for output (pdf/tex/rmd copy)
 #' @param language language
-#' @param tex_dir folder for output tex
 #' @param name name
 #' @param date date
 #' @param institution instituition
 #' @param logo name of the logo file
-#' @param files_sample character vector of Rmd file names
+#' @param filename character vector of Rmd file names
 #' @param add_seed actual seed is variant number plus add_seed
 #' @param encoding encoding
 #' @param samepage ?
@@ -72,10 +71,9 @@ data_2_answers = function(exam_data) {
 #' # exams2pdf_source(files_sample, date = "2019-09-27",
 #' #            n_vars = 2, title = "Теория вероятностей!", institution = "Поехали :)", 
 #' # nops = TRUE, shuffle = TRUE)
-exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777, 
-                            pdf_dir = "pdf",
+exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
+                            output_dir = "output",
                             language = "ru",
-                            tex_dir = "tex",
                             name = "the_exam",
                             date = "2018-12-28", institution = "Теория вероятностей",
                             logo = "",
@@ -89,17 +87,28 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
                             nops = TRUE, shuffle = TRUE,
                             answers_as_tbl = TRUE) {
   all_answers = list()
+  
+  dir.create(output_dir)
+  
+  rmd_dir = paste0(output_dir, "/rmd/")
+  dir.create(rmd_dir)
+  
+  n_question = length(filename)
+  pad_width = round(log10(n_question)) + 1
+  files_sample = tibble(filename = filename, 
+                        local_filename = paste0(stringr::str_pad(1:n_question, pad_width, pad = "0"), ".Rmd"))
+  
+  for (i in 1:n_question) {
+    file.copy(files_sample$filename[i], paste0(rmd_dir, files_sample$local_filename[i]))
+  }
+  
   for (var_no in 1:n_vars) {
     var_no_string = stringr::str_pad(var_no, 2, pad = "0")
-    pdf_dir_no = paste0(pdf_dir, "_", var_no_string)
+    pdf_dir_no = paste0(output_dir, "/pdf_", var_no_string)
     dir.create(pdf_dir_no)
-    tex_dir_no = paste0(tex_dir, "_", var_no_string)
+    tex_dir_no = paste0(output_dir, "/tex_", var_no_string)
     dir.create(pdf_dir_no)
-    temp_dir_no = paste0("temp_", var_no_string)
-    # dir.create(temp_dir_no)
-    supp_dir_no = paste0("supp_", var_no_string)
-    # dir.create(supp_dir_no)
-    
+
     name_no = paste0(name, "_", var_no_string)
     
     if (shuffle) {
@@ -109,7 +118,7 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
     
     set.seed(var_no + add_seed)
     if (nops) {
-      exams <- exams::exams2nops(files_sample, n = 1, startid = var_no + add_seed,
+      exams <- exams::exams2nops(files_sample$filename, n = 1, startid = var_no + add_seed,
                           dir = pdf_dir_no,
                           verbose = TRUE,
                           language = language,
@@ -124,7 +133,7 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
                           header = header,
                           title = title)
     } else {
-      exams <- exams::exams2pdf(files_sample, n = 1, 
+      exams <- exams::exams2pdf(files_sample$filename, n = 1, 
                          dir = pdf_dir_no,
                          verbose = TRUE,
                          language = language,
@@ -134,7 +143,8 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
     }
     if (answers_as_tbl) {
       exam_df = data_2_answers(exams)
-      exam_df = dplyr::mutate(exam_df, var_no = var_no, file_name = files_sample)
+      exam_df = dplyr::mutate(exam_df, var_no = var_no)
+      exam_df = dplyr::bind_cols(exam_df, files_sample)
       all_answers[[var_no]] = exam_df
     } else {
       all_answers[[var_no]] = exams
@@ -142,7 +152,11 @@ exams2pdf_source = function(files_sample, n_vars = 1, add_seed = 777,
   }
   if (answers_as_tbl) {
     all_answers = dplyr::bind_rows(all_answers)
+    readr::write_csv(all_answers, paste0(output_dir, "/question_info.csv"))
+  } else {
+    readr::write_rds(all_answers, paste0(output_dir, "/question_info.Rds"))
   }
+
   return(all_answers)
 }
 

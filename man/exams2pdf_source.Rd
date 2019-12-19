@@ -4,9 +4,9 @@
 \alias{exams2pdf_source}
 \title{User-friendly version of exams2pdf from exams package}
 \usage{
-exams2pdf_source(files_sample, n_vars = 1, add_seed = 777,
-  pdf_dir = "pdf", language = "ru", tex_dir = "tex",
-  name = "the_exam", date = "2018-12-28",
+exams2pdf_source(filename, n_vars = 1, add_seed = 777,
+  output_dir = "output", language = "ru", name = "the_exam",
+  date = "2018-12-28",
   institution = "Теория вероятностей", logo = "",
   encoding = "UTF-8", samepage = TRUE, reglength = 3, blank = 0,
   template = "plain_no_sweave.tex",
@@ -15,17 +15,15 @@ exams2pdf_source(files_sample, n_vars = 1, add_seed = 777,
   nops = TRUE, shuffle = TRUE, answers_as_tbl = TRUE)
 }
 \arguments{
-\item{files_sample}{character vector of Rmd file names}
+\item{filename}{character vector of Rmd file names}
 
 \item{n_vars}{number of variants}
 
 \item{add_seed}{actual seed is variant number plus add_seed}
 
-\item{pdf_dir}{folder for output pdf}
+\item{output_dir}{folder for output (pdf/tex/rmd copy)}
 
 \item{language}{language}
-
-\item{tex_dir}{folder for output tex}
 
 \item{name}{name}
 
