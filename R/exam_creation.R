@@ -95,11 +95,11 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
   
   n_question = length(filename)
   pad_width = round(log10(n_question)) + 1
-  files_sample = tibble(filename = filename, 
+  files_sample_unshuffled = tibble(filename = filename, 
                         local_filename = paste0(stringr::str_pad(1:n_question, pad_width, pad = "0"), ".Rmd"))
   
   for (i in 1:n_question) {
-    file.copy(files_sample$filename[i], paste0(rmd_dir, files_sample$local_filename[i]))
+    file.copy(files_sample_unshuffled$filename[i], paste0(rmd_dir, files_sample_unshuffled$local_filename[i]))
   }
   
   for (var_no in 1:n_vars) {
@@ -113,7 +113,9 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
     
     if (shuffle) {
       set.seed(var_no + add_seed)
-      files_sample = sample(files_sample)
+      files_sample = sample_n(files_sample_unshuffled, nrow(files_sample_unshuffled))
+    } else {
+      files_sample = files_sample_unshuffled
     }
     
     set.seed(var_no + add_seed)
