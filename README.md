@@ -1,9 +1,12 @@
 # rexamsconverter
 
 Conversion of quiz files:
+
 * from rexams Rmd to beamer
 * from rexams Rmd to amc tex
 * from from amc tex to rexams Rmd.
+
+Some misc functions.
 
 ## Installation
 
@@ -12,7 +15,13 @@ Conversion of quiz files:
 devtools::install_github("bdemeshev/rexamsconverter")
 ```
 
-## Other converts
+Get all meta information in a tibble:
+```r
+files = list.files('path to Rmd files', pattern = "*.Rmd", full.names = TRUE, recursive = TRUE)
+meta = get_meta_information(files)
+```
+
+## Other converters
 
 * [latex2gift](https://github.com/tomeucapo/latex2gift)
 * [amc2moodle](https://github.com/nennigb/amc2moodle)
