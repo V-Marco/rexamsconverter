@@ -4,15 +4,27 @@
 \alias{exams2pdf_source}
 \title{User-friendly version of exams2pdf from exams package}
 \usage{
-exams2pdf_source(filename, n_vars = 1, add_seed = 777,
-  output_dir = "output", language = "ru", name = "the_exam",
+exams2pdf_source(
+  filename,
+  n_vars = 1,
+  add_seed = 777,
+  output_dir = "output",
+  language = "ru",
+  name = "the_exam",
   date = "2018-12-28",
-  institution = "Теория вероятностей", logo = "",
-  encoding = "UTF-8", samepage = TRUE, reglength = 3, blank = 0,
+  institution = "Probability theory",
+  logo = "",
+  encoding = "UTF-8",
+  samepage = TRUE,
+  reglength = 3,
+  blank = 0,
   template = "plain_no_sweave.tex",
   header = "\\\\input{../header.tex}",
-  title = "С Наступающим Новым Годом :)",
-  nops = TRUE, shuffle = TRUE, answers_as_tbl = TRUE)
+  title = "Be Happy :)",
+  nops = TRUE,
+  shuffle = TRUE,
+  answers_as_tbl = TRUE
+)
 }
 \arguments{
 \item{filename}{character vector of Rmd file names}
@@ -66,6 +78,6 @@ latex_executable <- Sys.which("pdflatex")
 options(texi2dvi = latex_executable)
 # files_all <- list.files('rmd/', pattern = "*.Rmd", full.names = TRUE)
 # exams2pdf_source(files_sample, date = "2019-09-27",
-#            n_vars = 2, title = "Теория вероятностей!", institution = "Поехали :)", 
+#            n_vars = 2, title = "Теория вероятностей!", institution = "Поехали :)",
 # nops = TRUE, shuffle = TRUE)
 }

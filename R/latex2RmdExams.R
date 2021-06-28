@@ -1,5 +1,5 @@
 #' Extracts unique argument from a latex command.
-#' 
+#'
 #' Extracts unique argument from a latex command.
 #'
 #' For example, from `\command{aabbcc}` we will extract `aabbcc`.
@@ -7,26 +7,26 @@
 #' 1. Unique command with given name.
 #' 2. Last closing bracket in element is the bracket we need.
 #' @param element character string with the command
-#' @param command command name 
+#' @param command command name
 #' @return string with the argument of a command
 #' @export
 #' @examples
 #' element = "\n      \\correctchoice{ $\\frac{S_n - 4n}{10\\sqrt{n}}$ }"
-#' extract_from_command(element, command = "correctchoice)
+#' extract_from_command(element, command = "correctchoice")
 extract_from_command = function(element, command = "correctchoice") {
-  
+
   search_pattern = paste0("\\\\", command, "\\{")
-  
+
   start_pos = stringr::str_locate(element, search_pattern)[, 2]
   end_pos = utils::tail(stringr::str_locate_all(element, "\\}")[[1]], 1)[, 2]
-  
+
   answer = stringr::str_trim(stringr::str_sub(element, start = start_pos + 1, end = end_pos - 1))
   return(answer)
 }
 
 
 #' Trim one big string
-#' 
+#'
 #' Trim one big string
 #'
 #' Trim every space and tab after and before each newline symbol.
@@ -44,12 +44,12 @@ global_trim <- function(string) {
 
 
 #' Converts $$...$$ into \[...\]
-#' 
+#'
 #' Converts $$...$$ into \[...\]
 #'
 #' Converts $$...$$ into \[...\]
 #' Assumes that the number of $$ is pair.
-#' @param string latex block with $$...$$ 
+#' @param string latex block with $$...$$
 #' @return latex block with \[...\]
 #' @export
 #' @examples
@@ -65,12 +65,12 @@ dollars_to_brackets <- function(string) {
 }
 
 
-#' Converts \[...\] into $$...$$ 
-#' 
-#' Converts \[...\] into $$...$$ 
+#' Converts \[...\] into $$...$$
 #'
-#' Converts \[...\] into $$...$$ 
-#' @param string latex block with \[...\] 
+#' Converts \[...\] into $$...$$
+#'
+#' Converts \[...\] into $$...$$
+#' @param string latex block with \[...\]
 #' @return latex block with $$...$$
 #' @export
 #' @examples
@@ -89,10 +89,10 @@ brackets_to_dollars <- function(string) {
 #' Convert a formatted LaTex document into multiple Rmd files.
 #'
 #' Convert a formatted LaTex document into multiple Rmd files formatted as rexams.
-#' The required format is the following: the LaTex document must contain all the questions you wish to convert to Rmd. 
+#' The required format is the following: the LaTex document must contain all the questions you wish to convert to Rmd.
 #' The questions must be formatted \href{https://github.com/V-Marco/rexamsconverter/blob/master/format_example.txt}{as following}.
 #' The document may also contain other elements (e.g. used for decoration) which will be ignored.
-#' There can also be text pieces related to several questions, e.g. 
+#' There can also be text pieces related to several questions, e.g.
 #' 'In questions 20-22...', which can be added to each of the questions mentioned.
 #' To do so, wrap these text pieces \href{https://github.com/V-Marco/rexamsconverter/blob/master/format_example.txt}{as following}.
 #' @param path2latex A path to the LaTex document in .txt format. The last element of the path must be the file itself.
@@ -104,13 +104,13 @@ brackets_to_dollars <- function(string) {
 latex2RmdExams <- function(path2latex, directory_name = substr(path2latex, 1, nchar(path2latex) - 4)) {
 
   file <- readr::read_file(path2latex)
-  
+
   # sometimes exams R package considers 4 spaces as beginning of verbatim text
   # so we trim every line
   file <- global_trim(file)
 
   # remove the line
-  file <- stringr::str_replace_all(file, "\\\\AMCnoCompleteMulti", "")  
+  file <- stringr::str_replace_all(file, "\\\\AMCnoCompleteMulti", "")
 
   # for the moment exams R package fails with \[...\] and requires $$...$$
   file <- brackets_to_dollars(file)

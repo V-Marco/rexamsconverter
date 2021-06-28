@@ -23,3 +23,7 @@ Assumptions:
 1. Unique command with given name.
 2. Last closing bracket in element is the bracket we need.
 }
+\examples{
+element = "\n      \\\\correctchoice{ $\\\\frac{S_n - 4n}{10\\\\sqrt{n}}$ }"
+extract_from_command(element, command = "correctchoice")
+}

@@ -19,6 +19,6 @@ Trim one big string
 Trim every space and tab after and before each newline symbol.
 }
 \examples{
-example = "sss\\n   dfdfd\\n\\n ddfdf\\n"
+example = "sss\n   dfdfd\n\n ddfdf\n"
 global_trim(example)
 }
