@@ -21,6 +21,9 @@ files = list.files('path to Rmd files', pattern = "*.Rmd", full.names = TRUE, re
 meta = get_meta_information(files)
 ```
 
+The function `get_meta_information` supposes tags proposed by [sharestats](https://sharestats.github.io/Statistics_Taxonomy/Statistics_Taxonomy.html) project.
+
+
 ## Other converters
 
 * [latex2gift](https://github.com/tomeucapo/latex2gift)
