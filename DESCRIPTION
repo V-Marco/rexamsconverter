@@ -1,0 +1,25 @@
+Package: rexamsconverter
+Title: Converts Rmd rexams Files into LaTex format and Backwards
+Version: 0.1.1
+Authors@R: c(person("Vladimir", "Omelyusik", email = "vsomelyusik@gmail.com",
+    role = c("aut", "cre")),
+    person("Boris", "Demeshev", email = "boris.demeshev@gmail.com",
+    role = c("aut")))
+Description: The package contains two main functions. The first one allows you
+    to convert formatted LaTex documents into Rmd files which can be 
+    processed by the rexams package. The second one does the opposite,
+    gathering Rmd files formatted as rexams into the one LaTex document.
+Depends: R (>= 3.5.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    readr (>= 1.2.0),
+    stringr (>= 1.3.0),
+    exams (>= 2.3-4),
+    purrr (>= 0.3.3),
+    dplyr (>= 0.8.0),
+    tibble (>= 2.1.0),
+    tidyr (>= 1.0.0),
+    magrittr (>= 1.4)
+RoxygenNote: 7.1.1
