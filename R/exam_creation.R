@@ -22,20 +22,19 @@ data_2_answers = function(exam_data) {
     dplyr::select(-level1)
 
   ex_answers_wide = tidyr::spread(ex_answers, level2, value)
-  ex_answers_wide = dplyr::mutate(ex_answers_wide, ans_letter =
-                             purrr::pmap_chr(list(solution1, solution2, solution3, solution4, solution5),
-                                      ~ paste0(ifelse(..1, "a", ""),
-                                               ifelse(..2, "b", ""),
-                                               ifelse(..3, "c", ""),
-                                               ifelse(..4, "d", ""),
-                                               ifelse(..5, "e", ""), collape = "")))
+  ex_answers_wide = tidyr::pivot_longer(ex_answers_wide, 
+                                        cols = starts_with("solution"),
+                                        names_to = 'option')
+  ex_answers_wide = dplyr::filter(ex_answers_wide, value == TRUE)
+  ex_answers_wide = dplyr::mutate(ex_answers_wide, 
+                                  ans_no = as.numeric(stringr::str_sub(option, start = -1)),
+                                  ans_letter = base::letters[ans_no])
   ex_answers_wide = dplyr::mutate(ex_answers_wide,
                            q_no = as.numeric(stringr::str_extract(exercise, "[0-9]+$")))
   ex_answers_wide = dplyr::select(ex_answers_wide, var_raw, q_no, name, ans_letter)
 
   return(ex_answers_wide)
 }
-
 
 
 #' User-friendly version of exams2pdf from exams package
