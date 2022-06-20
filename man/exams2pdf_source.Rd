@@ -23,7 +23,8 @@ exams2pdf_source(
   title = "Be Happy :)",
   nops = TRUE,
   shuffle = TRUE,
-  answers_as_tbl = TRUE
+  answers_as_tbl = TRUE,
+  ...
 )
 }
 \arguments{
@@ -64,12 +65,15 @@ exams2pdf_source(
 \item{shuffle}{logical, whether to shuffle questions in each variant}
 
 \item{answers_as_tbl}{logical, return answers as tibble and not as ugly list}
+
+\item{...}{further parameters passed to exams2nops or exams2pdf}
 }
 \value{
 Creates tex files and runs latex compilation
 }
 \description{
-User-friendly version of exams2pdf from exams package
+User-friendly version of exams2pdf from exams package. 
+Option texengine = "xelatex" may be useful.
 }
 \examples{
 # library(exams)

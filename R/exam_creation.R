@@ -39,7 +39,8 @@ data_2_answers = function(exam_data) {
 
 #' User-friendly version of exams2pdf from exams package
 #'
-#' User-friendly version of exams2pdf from exams package
+#' User-friendly version of exams2pdf from exams package. 
+#' Option texengine = "xelatex" may be useful.
 #' @param n_vars number of variants
 #' @param output_dir folder for output (pdf/tex/rmd copy)
 #' @param language language
@@ -59,6 +60,7 @@ data_2_answers = function(exam_data) {
 #' @param answers_as_tbl logical, return answers as tibble and not as ugly list
 #' @param nops logical, whether to use exam2nops or exam2pdf
 #' @param shuffle logical, whether to shuffle questions in each variant
+#' @param ... further parameters passed to exams2nops or exams2pdf
 #' @return Creates tex files and runs latex compilation
 #' @export
 #' @examples
@@ -84,7 +86,7 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
                             header = "\\input{../header.tex}",
                             title = "Be Happy :)",
                             nops = TRUE, shuffle = TRUE,
-                            answers_as_tbl = TRUE) {
+                            answers_as_tbl = TRUE, ...) {
   all_answers = list()
 
   dir.create(output_dir)
@@ -132,7 +134,7 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
                           reglength = reglength, # is not working?
                           blank = blank,
                           header = header,
-                          title = title)
+                          title = title, ...)
     } else {
       exams <- exams::exams2pdf(files_sample$filename, n = 1,
                          dir = pdf_dir_no,
@@ -140,7 +142,7 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
                          language = language,
                          texdir = tex_dir_no,
                          encoding = encoding,
-                         template = template)
+                         template = template, ...)
     }
     if (answers_as_tbl) {
       exam_df = data_2_answers(exams)
