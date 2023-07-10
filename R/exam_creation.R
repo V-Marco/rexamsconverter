@@ -183,7 +183,7 @@ exams2pdf_source = function(filename, n_vars = 1,
                           seed = FALSE, ...)
     } else {
       if (!is.null(template_text)) {
-        template = tempfile() 
+        template = tempfile(fileext = '.tex') 
         readr::write_file(template_text[var_no], file=template)
       }
       exams <- exams::exams2pdf(files_sample$filename, n = 1,
