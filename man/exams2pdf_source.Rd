@@ -34,7 +34,7 @@ exams2pdf_source(
 
 \item{shuffle}{logical, whether to shuffle questions in each variant}
 
-\item{add_seed}{actual seed is variant number plus add_seed, used only if shuffle is TRUE}
+\item{add_seed}{actual seed is variant number plus add_seed}
 
 \item{output_dir}{folder for output (pdf/tex/rmd copy)}
 

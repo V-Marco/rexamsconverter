@@ -50,7 +50,7 @@ data_2_answers = function(exam_data) {
 #' @param logo name of the logo file
 #' @param filename character vector of Rmd file names
 #' @param shuffle logical, whether to shuffle questions in each variant
-#' @param add_seed actual seed is variant number plus add_seed, used only if shuffle is TRUE
+#' @param add_seed actual seed is variant number plus add_seed
 #' @param encoding encoding
 #' @param samepage ?
 #' @param blank number of blank pages
@@ -120,7 +120,7 @@ exams2pdf_source = function(filename, n_vars = 1,
       files_sample = files_sample_unshuffled
     }
 
-    set.seed(var_no + add_seed)
+    # set.seed(var_no + add_seed)
     if (nops) {
       exams <- exams::exams2nops(files_sample$filename, n = 1, 
                           startid = var_no + add_seed,
@@ -136,7 +136,8 @@ exams2pdf_source = function(filename, n_vars = 1,
                           reglength = reglength, # is not working?
                           blank = blank,
                           header = header,
-                          title = title, ...)
+                          title = title,
+                          seed = FALSE, ...)
     } else {
       exams <- exams::exams2pdf(files_sample$filename, n = 1,
                          dir = pdf_dir_no,
@@ -145,7 +146,8 @@ exams2pdf_source = function(filename, n_vars = 1,
                          language = language,
                          texdir = tex_dir_no,
                          encoding = encoding,
-                         template = template, ...)
+                         template = template, 
+                         seed = FALSE, ...)
     }
     if (answers_as_tbl) {
       exam_df = data_2_answers(exams)
