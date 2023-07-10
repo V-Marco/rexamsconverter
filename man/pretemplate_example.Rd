@@ -14,7 +14,7 @@ vector of file names of path to specific file
 }
 \description{
 Get path to pretemplate examples. 
-There are some pretemplates in ints/extdata directory.
+There are some pretemplates in inst/extdata directory.
 }
 \examples{
 pretemplate_example()

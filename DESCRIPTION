@@ -1,6 +1,6 @@
 Package: rexamsconverter
 Title: Converts Rmd rexams Files into LaTex format and Backwards
-Version: 0.1.6
+Version: 0.1.7
 Authors@R: c(person("Vladimir", "Omelyusik", email = "vsomelyusik@gmail.com",
     role = c("aut", "cre")),
     person("Boris", "Demeshev", email = "boris.demeshev@gmail.com",

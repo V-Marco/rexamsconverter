@@ -9,7 +9,7 @@ pretemplate2template(
   what = c("lhead", "chead", "rhead", "firstpage", "nquestions", "lfoot", "cfoot",
     "rfoot"),
   to = c("Теория вероятностей", "", "1984-01-01", "Удачи", "30",
-    "", "Dont panic", "\\\\thepage")
+    "", "Dont panic", "\\\\\\\\thepage")
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ template as character string
 }
 \description{
 Transform pretemplate file to template.
-There are some pretemplates in ints/extdata directory.
+There are some pretemplates in inst/extdata directory.
 }
 \examples{
 cat(pretemplate2template())
