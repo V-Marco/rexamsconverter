@@ -189,7 +189,8 @@ exams2pdf_source = function(filename, n_vars = 1,
   }
   if (answers_as_tbl) {
     all_answers = dplyr::bind_rows(all_answers)
-    readr::write_csv(all_answers, paste0(output_dir, "/question_info.csv"))
+    readr::write_tsv(all_answers, paste0(output_dir, "/question_info.tsv"))
+    openxlsx::write.xlsx(all_answers, paste0(output_dir, "/question_info.xlsx"))
   } else {
     readr::write_rds(all_answers, paste0(output_dir, "/question_info.Rds"))
   }

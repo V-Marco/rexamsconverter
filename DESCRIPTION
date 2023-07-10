@@ -21,5 +21,6 @@ Imports:
     dplyr (>= 0.8.0),
     tibble (>= 2.1.0),
     tidyr (>= 1.0.0),
-    magrittr (>= 1.4)
+    magrittr (>= 1.4),
+    openxlsx (>= 4.0.0)
 RoxygenNote: 7.2.3
