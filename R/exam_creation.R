@@ -43,7 +43,7 @@ data_2_answers = function(exam_data,
                     dplyr::select(exercise, ans_no, ans_letter)
   
   ex_answers_letter = dplyr::group_by(ex_answers_letter, exercise) %>%
-    summarise(ans_no = paste(ans_no, sep=', ', collapse = ', '),
+    dplyr::summarise(ans_no = paste(ans_no, sep=', ', collapse = ', '),
               ans_letter = paste(ans_letter, sep=', ', collapse = ', '))
   
   ex_answers_wide = dplyr::mutate(ex_answers_wide,
