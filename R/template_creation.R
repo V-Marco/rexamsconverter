@@ -26,7 +26,7 @@ pretemplate_example = function(path = NULL) {
 #' @return template as character string
 #' @export
 #' @examples
-#' a = pretemplate2template()
+#' cat(pretemplate2template())
 pretemplate2template = function(path = pretemplate_example('zetex-pre-template.tex'), 
       what = c('lhead', 'chead', 'rhead', 'firstpage', 'nquestions',
                'lfoot', 'cfoot', 'rfoot'),

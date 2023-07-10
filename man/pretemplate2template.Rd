@@ -27,5 +27,5 @@ Transform pretemplate file to template.
 There are some pretemplates in ints/extdata directory.
 }
 \examples{
-a = pretemplate2template()
+cat(pretemplate2template())
 }

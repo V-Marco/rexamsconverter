@@ -19,6 +19,7 @@ exams2pdf_source(
   samepage = TRUE,
   reglength = 3,
   blank = 0,
+  template_text = NULL,
   template = "plain_no_sweave.tex",
   header = "\\\\input{../header.tex}",
   title = "Be Happy :)",
@@ -55,6 +56,9 @@ exams2pdf_source(
 \item{reglength}{?}
 
 \item{blank}{number of blank pages}
+
+\item{template_text}{text of the template tex. If is NULL then template file is used.
+The length of the vector should be 1 or match the number of variants.}
 
 \item{template}{name of the template tex file, not used if nops == TRUE}
 

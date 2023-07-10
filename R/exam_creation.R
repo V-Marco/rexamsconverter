@@ -88,6 +88,8 @@ data_2_answers = function(exam_data,
 #' @param samepage ?
 #' @param blank number of blank pages
 #' @param template name of the template tex file, not used if nops == TRUE
+#' @param template_text text of the template tex. If is NULL then template file is used.
+#' The length of the vector should be 1 or match the number of variants.
 #' @param header header tex file name, not used if nops == FALSE
 #' @param reglength ?
 #' @param title title
@@ -110,12 +112,14 @@ exams2pdf_source = function(filename, n_vars = 1,
                             output_dir = "output",
                             language = "ru",
                             name = "the_exam",
-                            date = "2018-12-28", institution = "Probability theory",
+                            date = "2018-12-28", 
+                            institution = "Probability theory",
                             logo = "",
                             encoding = "UTF-8",
                             samepage = TRUE,
                             reglength = 3, # is not working?
                             blank = 0,
+                            template_text = NULL,
                             template = "plain_no_sweave.tex",
                             header = "\\input{../header.tex}",
                             title = "Be Happy :)",
@@ -135,6 +139,12 @@ exams2pdf_source = function(filename, n_vars = 1,
 
   for (i in 1:n_question) {
     file.copy(files_sample_unshuffled$filename[i], paste0(rmd_dir, files_sample_unshuffled$local_filename[i]))
+  }
+  
+  if (!is.null(template_text)) {
+    if (length(template_text) < n_vars) {
+      template_text = rep(template_text[1], n_vars)
+    }
   }
 
   for (var_no in 1:n_vars) {
@@ -172,6 +182,10 @@ exams2pdf_source = function(filename, n_vars = 1,
                           title = title,
                           seed = FALSE, ...)
     } else {
+      if (!is.null(template_text)) {
+        template = tempfile() 
+        readr::write_file(template_text[var_no], file=template)
+      }
       exams <- exams::exams2pdf(files_sample$filename, n = 1,
                          dir = pdf_dir_no,
                          verbose = TRUE,
