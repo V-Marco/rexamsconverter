@@ -23,7 +23,7 @@ data_2_answers = function(exam_data) {
 
   ex_answers_wide = tidyr::spread(ex_answers, level2, value)
   ex_answers_wide = tidyr::pivot_longer(ex_answers_wide, 
-                                        cols = starts_with("solution"),
+                                        cols = dplyr::starts_with("solution"),
                                         names_to = 'option')
   ex_answers_wide = dplyr::filter(ex_answers_wide, value == TRUE)
   ex_answers_wide = dplyr::mutate(ex_answers_wide, 
@@ -49,7 +49,8 @@ data_2_answers = function(exam_data) {
 #' @param institution instituition
 #' @param logo name of the logo file
 #' @param filename character vector of Rmd file names
-#' @param add_seed actual seed is variant number plus add_seed
+#' @param shuffle logical, whether to shuffle questions in each variant
+#' @param add_seed actual seed is variant number plus add_seed, used only if shuffle is TRUE
 #' @param encoding encoding
 #' @param samepage ?
 #' @param blank number of blank pages
@@ -59,7 +60,6 @@ data_2_answers = function(exam_data) {
 #' @param title title
 #' @param answers_as_tbl logical, return answers as tibble and not as ugly list
 #' @param nops logical, whether to use exam2nops or exam2pdf
-#' @param shuffle logical, whether to shuffle questions in each variant
 #' @param ... further parameters passed to exams2nops or exams2pdf
 #' @return Creates tex files and runs latex compilation
 #' @export
@@ -72,7 +72,8 @@ data_2_answers = function(exam_data) {
 #' # exams2pdf_source(files_sample, date = "2019-09-27",
 #' #            n_vars = 2, title = "Теория вероятностей!", institution = "Поехали :)",
 #' # nops = TRUE, shuffle = TRUE)
-exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
+exams2pdf_source = function(filename, n_vars = 1, 
+                            shuffle = TRUE, add_seed = 777,
                             output_dir = "output",
                             language = "ru",
                             name = "the_exam",
@@ -85,7 +86,7 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
                             template = "plain_no_sweave.tex",
                             header = "\\input{../header.tex}",
                             title = "Be Happy :)",
-                            nops = TRUE, shuffle = TRUE,
+                            nops = TRUE, 
                             answers_as_tbl = TRUE, ...) {
   all_answers = list()
 
@@ -96,7 +97,7 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
 
   n_question = length(filename)
   pad_width = round(log10(n_question)) + 1
-  files_sample_unshuffled = tibble(filename = filename,
+  files_sample_unshuffled = tibble::tibble(filename = filename,
                         local_filename = paste0(stringr::str_pad(1:n_question, pad_width, pad = "0"), ".Rmd"))
 
   for (i in 1:n_question) {
@@ -110,23 +111,24 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
     tex_dir_no = paste0(output_dir, "/tex_", var_no_string)
     dir.create(pdf_dir_no)
 
-    name_no = paste0(name, "_", var_no_string)
+    name_no = paste0(name, "_v", var_no_string, '_')
 
     if (shuffle) {
       set.seed(var_no + add_seed)
-      files_sample = sample_n(files_sample_unshuffled, nrow(files_sample_unshuffled))
+      files_sample = dplyr::sample_n(files_sample_unshuffled, nrow(files_sample_unshuffled))
     } else {
       files_sample = files_sample_unshuffled
     }
 
     set.seed(var_no + add_seed)
     if (nops) {
-      exams <- exams::exams2nops(files_sample$filename, n = 1, startid = var_no + add_seed,
+      exams <- exams::exams2nops(files_sample$filename, n = 1, 
+                          startid = var_no + add_seed,
                           dir = pdf_dir_no,
                           verbose = TRUE,
                           language = language,
                           texdir = tex_dir_no,
-                          name = name,
+                          name = name_no,
                           date = date, institution = institution,
                           logo = "",
                           encoding = encoding,
@@ -139,6 +141,7 @@ exams2pdf_source = function(filename, n_vars = 1, add_seed = 777,
       exams <- exams::exams2pdf(files_sample$filename, n = 1,
                          dir = pdf_dir_no,
                          verbose = TRUE,
+                         name = name_no,
                          language = language,
                          texdir = tex_dir_no,
                          encoding = encoding,

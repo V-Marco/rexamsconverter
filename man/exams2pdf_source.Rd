@@ -7,6 +7,7 @@
 exams2pdf_source(
   filename,
   n_vars = 1,
+  shuffle = TRUE,
   add_seed = 777,
   output_dir = "output",
   language = "ru",
@@ -22,7 +23,6 @@ exams2pdf_source(
   header = "\\\\input{../header.tex}",
   title = "Be Happy :)",
   nops = TRUE,
-  shuffle = TRUE,
   answers_as_tbl = TRUE,
   ...
 )
@@ -32,7 +32,9 @@ exams2pdf_source(
 
 \item{n_vars}{number of variants}
 
-\item{add_seed}{actual seed is variant number plus add_seed}
+\item{shuffle}{logical, whether to shuffle questions in each variant}
+
+\item{add_seed}{actual seed is variant number plus add_seed, used only if shuffle is TRUE}
 
 \item{output_dir}{folder for output (pdf/tex/rmd copy)}
 
@@ -61,8 +63,6 @@ exams2pdf_source(
 \item{title}{title}
 
 \item{nops}{logical, whether to use exam2nops or exam2pdf}
-
-\item{shuffle}{logical, whether to shuffle questions in each variant}
 
 \item{answers_as_tbl}{logical, return answers as tibble and not as ugly list}
 
