@@ -41,6 +41,11 @@ data_2_answers = function(exam_data,
                                   ans_no = as.numeric(stringr::str_sub(option, start = -1)),
                                   ans_letter = base::letters[ans_no]) %>%
                     dplyr::select(exercise, ans_no, ans_letter)
+  
+  ex_answers_letter = dplyr::group_by(ex_answers_letter, exercise) %>%
+    summarise(ans_no = paste(ans_no, sep=', ', collapse = ', '),
+              ans_letter = paste(ans_letter, sep=', ', collapse = ', '))
+  
   ex_answers_wide = dplyr::mutate(ex_answers_wide,
                            q_no = as.numeric(stringr::str_extract(exercise, "[0-9]+$"))) %>%
           dplyr::select(-var_raw)
