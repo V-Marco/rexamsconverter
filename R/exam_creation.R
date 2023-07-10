@@ -2,11 +2,13 @@
 #'
 #' Extracts answers from ugly list to human readable table
 #' @param exam_data ugly list with answers from R exams package
+#' @param preserved_fields preserved fields in metainfo
 #' @return tibble with answers
 #' @export
 #' @examples
 #' # data_2_answers(exam_data)
-data_2_answers = function(exam_data) {
+data_2_answers = function(exam_data, 
+                          preserved_fields = c('name', 'Language', 'Level', 'Type')) {
   exam_vector = unlist(exam_data)
   exam_tibble = tibble::tibble(value = exam_vector, branch = names(value))
   exam_tibble = dplyr::mutate(exam_tibble, n_dots = stringr::str_count(branch, pattern = "\\."))
@@ -18,22 +20,48 @@ data_2_answers = function(exam_data) {
   exam_tibble = dplyr::select(exam_tibble, -n_dots)
 
   ex_answers = dplyr::filter(exam_tibble,
-                      (level1 == "metainfo") & ((level2 == "name") | (stringr::str_detect(level2, "solution")))) %>%
+                      (level1 == "metainfo") & ((level2 %in% preserved_fields) | (stringr::str_detect(level2, "solution")))) %>%
     dplyr::select(-level1)
+  ex_options = dplyr::filter(exam_tibble, stringr::str_starts(level1, "questionlist")) %>%
+    dplyr::select(-level1)
+  ex_options = dplyr::group_by(ex_options, exercise) %>% 
+    dplyr::mutate(id = dplyr::row_number(),
+                  colname = ifelse(level2 == '', paste0('option_', id), level2))
+    
+  
+  ex_options_wide = tidyr::pivot_wider(ex_options, 
+      id_cols = 'exercise', values_from = 'value', names_from = 'colname') 
 
   ex_answers_wide = tidyr::spread(ex_answers, level2, value)
-  ex_answers_wide = tidyr::pivot_longer(ex_answers_wide, 
+  ex_answers_long = tidyr::pivot_longer(ex_answers_wide, 
                                         cols = dplyr::starts_with("solution"),
                                         names_to = 'option')
-  ex_answers_wide = dplyr::filter(ex_answers_wide, value == TRUE)
-  ex_answers_wide = dplyr::mutate(ex_answers_wide, 
+  ex_answers_true = dplyr::filter(ex_answers_long, value == TRUE)
+  ex_answers_letter = dplyr::mutate(ex_answers_true, 
                                   ans_no = as.numeric(stringr::str_sub(option, start = -1)),
-                                  ans_letter = base::letters[ans_no])
+                                  ans_letter = base::letters[ans_no]) %>%
+                    dplyr::select(exercise, ans_no, ans_letter)
   ex_answers_wide = dplyr::mutate(ex_answers_wide,
-                           q_no = as.numeric(stringr::str_extract(exercise, "[0-9]+$")))
-  ex_answers_wide = dplyr::select(ex_answers_wide, var_raw, q_no, name, ans_letter)
+                           q_no = as.numeric(stringr::str_extract(exercise, "[0-9]+$"))) %>%
+          dplyr::select(-var_raw)
+  
+  ex_questions = dplyr::filter(exam_tibble, stringr::str_starts(level1, 'question[0-9]*$'))  %>%
+    dplyr::group_by(exercise) %>% 
+    dplyr::summarise(text = paste(value, sep='\n', collapse = '\n'))
+  
+  
+  all_info = dplyr::left_join(ex_answers_wide, 
+                              ex_answers_letter,
+                              by = 'exercise')
+  all_info = dplyr::left_join(all_info, 
+                              ex_options_wide,
+                              by = 'exercise') %>%
+              dplyr::left_join(ex_questions, by = 'exercise') %>%
+    dplyr::select(-exercise) %>%
+    dplyr::relocate(q_no, ans_no, ans_letter, text)
+  
 
-  return(ex_answers_wide)
+  return(all_info)
 }
 
 
@@ -151,7 +179,8 @@ exams2pdf_source = function(filename, n_vars = 1,
     }
     if (answers_as_tbl) {
       exam_df = data_2_answers(exams)
-      exam_df = dplyr::mutate(exam_df, var_no = var_no)
+      exam_df = dplyr::mutate(exam_df, var_no = var_no) %>%
+        dplyr::relocate(var_no)
       exam_df = dplyr::bind_cols(exam_df, files_sample)
       all_answers[[var_no]] = exam_df
     } else {

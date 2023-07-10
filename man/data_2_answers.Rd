@@ -4,10 +4,15 @@
 \alias{data_2_answers}
 \title{Extracts answers from ugly list to human readable table}
 \usage{
-data_2_answers(exam_data)
+data_2_answers(
+  exam_data,
+  preserved_fields = c("name", "Language", "Level", "Type")
+)
 }
 \arguments{
 \item{exam_data}{ugly list with answers from R exams package}
+
+\item{preserved_fields}{preserved fields in metainfo}
 }
 \value{
 tibble with answers
