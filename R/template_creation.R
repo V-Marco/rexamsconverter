@@ -16,26 +16,69 @@ pretemplate_example = function(path = NULL) {
   }
 }
 
+#' Get a list of pretemplate parameters
+#'
+#' Get a list of fields that can be replaced by something meaningful. 
+#' Use four slashes to write one slash. 
+#' @param path name of pretemplate
+#' @return character vector of pretemplate params
+#' @export
+#' @examples
+#' pretemplate_params()
+pretemplate_params = function(path = pretemplate_example('zetex-pre-template.tex')) {
+  template = readr::read_file(path)              
+  params = stringr::str_match_all(template, '##([a-zA-Z]+)##')[[1]][, 2]
+  return(params)
+}
+
+
 #' Transform pretemplate file to template
 #'
 #' Transform pretemplate file to template.
 #' There are some pretemplates in inst/extdata directory.
-#' @param path name of pretemplate
-#' @param what vector of replaced words in pretemplate
-#' @param to vector of replacement words 
-#' @return template as character string
+#' @param path path to pretemplate
+#' @param ... fields replaced in pretemplate as character vectors.
+#' The length of each character vector should be 1 or equal to the number of variants.
+#' @return templates as character vector
 #' @export
 #' @examples
-#' cat(pretemplate2template())
-pretemplate2template = function(path = pretemplate_example('zetex-pre-template.tex'), 
-      what = c('lhead', 'chead', 'rhead', 'firstpage', 'nquestions',
-               'lfoot', 'cfoot', 'rfoot'),
-      to = c('Теория вероятностей', '', '1984-01-01', 'Удачи', '30',
-             '', 'Dont panic', '\\\\thepage')) {
+#' template_text = pretemplate2template(
+#'   lhead = 'Теория вероятностей', chead = '', rhead = '1984-01-01', 
+#'   firstpage = 'Удачи!', nquestions = '30', 
+#'   lfoot = c('Вариант 1', 'Вариант 2'), 
+#'   cfoot = 'Don\'t panic', rfoot = '\\\\thepage')
+#' cat(template_text[1])
+
+pretemplate2template = function(path = pretemplate_example('zetex-pre-template.tex'), ...) {
   template = readr::read_file(path)
-  for (str_no in 1:length(what)) {
-    what_with_hash = paste0('##', what[str_no], '##')
-    template = stringr::str_replace(template, what_with_hash, to[str_no])
+  params = pretemplate_params(path)
+  message('You can set: ', paste0(params, collapse = ', '), '\n', 'in the pretemplate\n', path, '\n')
+  message('You may write your own pretemplate file. \nThat\'s an ordinary tex-file with some ##fieldname## entries.\n')
+  
+  arguments = c(as.list(environment()), list(...))
+  fields = setdiff(names(arguments), 'path')
+  
+  n_vars = 1
+  for (field in fields) {
+    n_vars = max(n_vars, length(arguments[[field]]))
+  }
+  template = rep(template, n_vars)
+  
+  for (var_no in 1:n_vars) {
+    for (field in fields) {
+      what_with_hash = paste0('##', field, '##')
+      if (n_vars > length(arguments[[field]])) {
+        replacement = arguments[[field]][1]
+      } else {
+        replacement = arguments[[field]][n_vars] 
+      }
+      if (is.null(replacement)) { 
+        replacement = ''
+      }
+      template[var_no] = stringr::str_replace(template[var_no], what_with_hash, replacement)
+    }
   }
   return(template)
 }
+
+

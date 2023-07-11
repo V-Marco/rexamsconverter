@@ -4,28 +4,26 @@
 \alias{pretemplate2template}
 \title{Transform pretemplate file to template}
 \usage{
-pretemplate2template(
-  path = pretemplate_example("zetex-pre-template.tex"),
-  what = c("lhead", "chead", "rhead", "firstpage", "nquestions", "lfoot", "cfoot",
-    "rfoot"),
-  to = c("Теория вероятностей", "", "1984-01-01", "Удачи", "30",
-    "", "Dont panic", "\\\\\\\\thepage")
-)
+pretemplate2template(path = pretemplate_example("zetex-pre-template.tex"), ...)
 }
 \arguments{
-\item{path}{name of pretemplate}
+\item{path}{path to pretemplate}
 
-\item{what}{vector of replaced words in pretemplate}
-
-\item{to}{vector of replacement words}
+\item{...}{fields replaced in pretemplate as character vectors.
+The length of each character vector should be 1 or equal to the number of variants.}
 }
 \value{
-template as character string
+templates as character vector
 }
 \description{
 Transform pretemplate file to template.
 There are some pretemplates in inst/extdata directory.
 }
 \examples{
-cat(pretemplate2template())
+template_text = pretemplate2template(
+  lhead = 'Теория вероятностей', chead = '', rhead = '1984-01-01', 
+  firstpage = 'Удачи!', nquestions = '30', 
+  lfoot = c('Вариант 1', 'Вариант 2'), 
+  cfoot = 'Don\'t panic', rfoot = '\\\\\\\\thepage')
+cat(template_text[1])
 }
